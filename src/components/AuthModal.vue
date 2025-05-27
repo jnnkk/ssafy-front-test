@@ -286,7 +286,7 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 // login(email, password) 은 앞서 만든 서비스 함수
 import { login } from '@/assets/js/login'
-import { useAuthModalStore } from '@/stores/authModal'
+import { useAuthModalStore } from '@/stores/authmodal'
 
 const modal = useAuthModalStore()
 const router = useRouter()
