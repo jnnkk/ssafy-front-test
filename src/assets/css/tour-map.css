@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "GongGothicMedium";
+}
+
+#toggle-info-btn {
+    border-radius : 0 20px 20px 0; 
+    max-height: 80px;
+}
+
+
+#tour-info {
+    width: 20vw; /* 기존보다 너비 축소 */
+    max-width: 300px; /* 최대 너비 제한 */
+    min-width: 150px; /* 최소 너비 설정 */
+}
+
+#landmarkURL {
+    text-overflow: ellipsis;
+}
+
+#favorite:hover {
+    cursor: pointer;
+}
+
+.form-select:hover {
+    cursor: pointer;
+}
+
+.bi-star-fill {
+    stroke: black;
+    stroke-width: 1;
+}
+
+.bi-star {
+    stroke: black;
+    stroke-width: 2;
+}

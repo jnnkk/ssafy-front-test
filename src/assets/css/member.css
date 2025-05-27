@@ -1,0 +1,74 @@
+/* member.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 500px;
+    width: 90%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn-update, .btn-delete {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .btn-update {
+    background-color: #556b2f;
+    color: #fff;
+    margin-top: 10px;
+  }
+  
+  .btn-update:hover {
+    background-color: #4a5c26;
+  }
+  
+  .btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+    margin-top: 20px;
+  }
+  
+  .btn-delete:hover {
+    background-color: #c82333;
+  }
+  
