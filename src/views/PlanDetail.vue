@@ -191,7 +191,8 @@ const kakaoApi = axios.create({
   baseURL: 'https://apis-navi.kakaomobility.com',
   headers: {
     'Authorization': `KakaoAK ${import.meta.env.VITE_APP_KAKAO_REST_KEY}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   }
 })
 
@@ -214,7 +215,11 @@ async function fetchPlanAndCoords() {
     coordinates.value = []
     loginUser.value = JSON.parse(sessionStorage.getItem('loginUser'));
     // 1) 플랜 메타
-    const { data: { value: plan } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`)
+    const { data: { value: plan } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     planDetail.value = {
       userId: plan.userId,
       title:     plan.planName,
@@ -224,11 +229,19 @@ async function fetchPlanAndCoords() {
     }
 
     // 2) 경로 목록
-    const { data: { value: rts } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes`)
+    const { data: { value: rts } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
      routes.value = rts
     // 3) 각 route마다 어트랙션 정보 가져오고, routeDetails & coordinates 채우기
     for (const rt of rts) {
-      const { data: { value: attr } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${rt.attrId}`)
+      const { data: { value: attr } } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${rt.attrId}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      })
 
       // a) routeDetails 에 순서·ID·타이틀·이미지 담기
       routeDetails.value.push({

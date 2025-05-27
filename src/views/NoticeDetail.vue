@@ -48,7 +48,11 @@ function formatDate(ts) {
 async function fetchNotice() {
   try {
     const boardId = route.params.id;
-    const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/notices/${boardId}`)
+    const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/notices/${boardId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     // data 구조에 맞게 필드 매핑
     notice.value.category   = data.value.category
     notice.value.title      = data.value.title

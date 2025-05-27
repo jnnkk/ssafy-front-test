@@ -97,7 +97,11 @@ function formatTime(timestamp) {
 // 상세 조회 및 메시지 구성
 async function fetchDetail() {
   try {
-    const qRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}`)
+    const qRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const qData = qRes.data.value ?? {}
     question.value= qData
     console.log(qData)
@@ -110,7 +114,11 @@ async function fetchDetail() {
       date: qData.createDate,
     })
 
-    const aRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}/answers`)
+    const aRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}/answers`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const answers = aRes.data.value || []
     answers.forEach(ans => {
       msgs.push({
@@ -145,6 +153,9 @@ function goBack() {
 async function updateCheckStatus(isChecked) {
   try {
     const result = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}/request`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
       params:  {isChecked}
     })
     if(result.data.value === 'checked'){
@@ -162,7 +173,11 @@ async function updateCheckStatus(isChecked) {
 async function deleteAnswer() {
   if (!confirm('정말 이 답변을 삭제하시겠습니까?')) return
   try {
-    await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}/answers`)
+    await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/questions/${questionId}/answers`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     fetchDetail()
   } catch (err) {
     console.error('답변 삭제 실패', err)
@@ -178,6 +193,10 @@ async function postAnswer() {
       answerTitle: '',
       answerContent: replyText.value,
       adminId: loginUser.value.userId,
+    }, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
     })
     replyText.value = ''
     fetchDetail()

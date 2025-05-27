@@ -346,7 +346,7 @@ watch(
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/auth/check-email`,
-        { params: { email: val } }
+        { params: { email: val }, headers: { 'ngrok-skip-browser-warning': 'true' } }
       )
       validation.emailValid = data.value.canUse
       console.log(validation.emailValid)
@@ -407,6 +407,11 @@ async function onSignup() {
       email : signupData.email,
       password : signupData.password,
       profile : 'https://enjoytrip123-bucket.s3.ap-southeast-2.amazonaws.com/noImage.avif'
+      },
+      {
+        headers: {
+            'ngrok-skip-browser-warning': 'true',
+        }
       })
     console.log(data)
     console.log('회원가입 데이터:', signupData)

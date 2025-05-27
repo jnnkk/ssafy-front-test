@@ -69,7 +69,8 @@ export default {
           payload,
           {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': 'true',
             }
           }
         )

@@ -418,6 +418,10 @@ const toggleRecommend = async () => {
       const addResponse = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/recommends`, {
         userId: user.value.userId,
         attrId: props.selectedMarker.attrId,
+      }, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
       });
       console.log('추천 추가 응답:', addResponse.data);
     } else {
@@ -426,6 +430,9 @@ const toggleRecommend = async () => {
         data: {
           userId: user.value.userId,
           attrId: props.selectedMarker.attrId,
+        },
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
         }
       });
       console.log('추천 삭제 응답:', deleteResponse.data);
@@ -435,7 +442,11 @@ const toggleRecommend = async () => {
     await fetchRecommendList();
     
     // 현재 선택된 장소의 추천 수 업데이트
-    const countResponse = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/recommends/${props.selectedMarker.attrId}`);
+    const countResponse = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/recommends/${props.selectedMarker.attrId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    });
     console.log('추천 수 조회 응답:', countResponse.data);
     
     // 상태 업데이트 - 응답 구조에 따라 적절히 수정
@@ -465,6 +476,9 @@ const fetchRecommendList = async () => {
     const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/recommends`, {
       params: {
         userId: user.value.userId
+      },
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
       }
     });
     
@@ -543,7 +557,11 @@ const openDirections = () => {
 
 // 즐겨찾기 기능 (추후 구현)
 const toggleFavorite = async () => {
-  const user = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`)
+  const user = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  })
 
   // TODO: 즐겨찾기 기능 구현
   console.log('즐겨찾기 토글:', props.selectedMarker?.title)
@@ -566,6 +584,10 @@ const addFavorites = async (userId, attrId, attraction) => {
     userId: userId,
     attrId: attrId,
     attraction: attraction
+  }, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
   })
   console.log(res)
   useFavoriteStore().fetchFavorites(userId)
@@ -573,7 +595,11 @@ const addFavorites = async (userId, attrId, attraction) => {
 
 // 즐겨찾기 삭제 AJAX 요청
 const deleteFavorites = async (userId, attrId) => {
-  const res = await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/favorites?userId=${userId}&attrId=${attrId}`)
+  const res = await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/favorites?userId=${userId}&attrId=${attrId}`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  })
   console.log(res)
   useFavoriteStore().fetchFavorites(userId)
 }
@@ -586,7 +612,11 @@ const fetchGuguns = async (sidoCode) => {
   }
 
   try {
-    const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/guguns?sidoCode=${selectedSido.value}`)
+    const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/guguns?sidoCode=${selectedSido.value}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     
     guguns.value = data.value.map(g => ({
       name: g.gugunName,
@@ -607,14 +637,22 @@ const askAi = async () => {
   isLoading.value = true
   try {
     console.log('AI 추천 장소 요청:', props.selectedMarker.title)
-    const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/ai/recommend?attrId=${props.selectedMarker.attrId}`)
+    const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/ai/recommend?attrId=${props.selectedMarker.attrId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     
     console.log(response.data.value)
     // 서버에서 받아온 추천 장소 데이터 저장
     if (response.data && response.data.value) {
       for (let i = 0; i < response.data.value.length; i++) {
 
-        const attraction = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${response.data.value[i].id}`)
+        const attraction = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${response.data.value[i].id}`, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          }
+        })
         attraction.data.value.overview = response.data.value[i].overview
         recommendedPlaces.value.push(attraction.data.value)
       }

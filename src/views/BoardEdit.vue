@@ -75,7 +75,11 @@ const planOptions = ref([])
 // 기존 게시글 불러오기
 async function fetchBoard() {
   try {
-    const { data: raw } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards/${route.params.id}`)
+    const { data: raw } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards/${route.params.id}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const data = raw.value ?? raw
     form.title = data.title
     form.planId = data.planId
@@ -92,16 +96,28 @@ async function fetchPlans() {
   if (saved) loginUser.value = JSON.parse(saved)
   if (!loginUser.value.userId) return
   try {
-    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${loginUser.value.userId}`)
+    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${loginUser.value.userId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const plans = res.data.value ?? []
 
     await Promise.all(plans.map(async plan => {
-      const routeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${plan.planId}/routes`)
+      const routeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${plan.planId}/routes`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      })
       plan.routeList = routeRes.data.value ?? []
 
       await Promise.all(plan.routeList.map(async r => {
         try {
-          const attrRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${r.attrId}`)
+          const attrRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${r.attrId}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            }
+          })
           r.attractionTitle = (attrRes.data.value ?? attrRes.data).title
         } catch {
           r.attractionTitle = ''
@@ -135,7 +151,7 @@ await axios.put(
     tags: form.tags,
     content: form.content,
   },
-  { headers: { 'Content-Type': 'application/json' } }
+  { headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' } }
 )
     router.push({ name: 'BoardDetail', params: { id: boardId } })
   } catch (e) {

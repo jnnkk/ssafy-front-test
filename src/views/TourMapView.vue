@@ -86,7 +86,11 @@ import axios from 'axios'
 
 const fetchAttractions = async (keyword, sidoCode, gugunCode, addMode = false) => {
   try {
-    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions?sidoCode=${sidoCode}&gugunCode=${gugunCode}&contentType=0`)
+    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions?sidoCode=${sidoCode}&gugunCode=${gugunCode}&contentType=0`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     
     const attractionStore = useAttractionStore()
     const validData = data.data.value.filter(attraction => attraction.latitude && attraction.longitude)
@@ -113,7 +117,11 @@ const fetchAttractions = async (keyword, sidoCode, gugunCode, addMode = false) =
 
 const fetchFavoritesUser = async () => {
   try {
-    const user = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`)
+    const user = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     
     useFavoriteStore().fetchFavorites(user.data.value.userId)
   } catch (error) {

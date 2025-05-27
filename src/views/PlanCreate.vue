@@ -146,7 +146,11 @@ const closeMapModal = () => {
 }
 // API 호출: 즐겨찾기 옵션 불러오기
 async function fetchFavorites() {
-  const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${loginUser.value.userId}`);
+  const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${loginUser.value.userId}`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  });
   favoritesOptions.value = res.data.value || res.data;
   // 옵션에 title 세팅 등 필요 시 추가
   await Promise.all(
@@ -166,7 +170,11 @@ async function fetchFavorites() {
 
 // 수정 모드일 때 기존 데이터 채우기
 async function fetchPlanData() {
-  const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`);
+  const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  });
   const data = res.data.value;
   form.planId = data.planId;
   form.planName = data.planName;
@@ -176,10 +184,18 @@ async function fetchPlanData() {
   
 
   // 기존 경로
-  const rtRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes`);
+  const rtRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  });
   favoritesList.value = await Promise.all(
     rtRes.data.value.map(async r => {
-      const atRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${r.attrId}`);
+      const atRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${r.attrId}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      });
       return { attrId: r.attrId, attrTitle: atRes.data.value.title };
     })
   );
@@ -211,7 +227,11 @@ form.endDate   = toMySQLDatetime(form.endDate);
   if (isEdit) {
     // 플랜 수정
     
-    await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/plans`, form);
+    await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/plans`, form, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    });
     // 기존 경로 삭제 후 재등록
     
     for (let i = 0; i < favoritesList.value.length; i++) {
@@ -219,24 +239,40 @@ form.endDate   = toMySQLDatetime(form.endDate);
       console.log(itm);
 
        await axios.delete(
-      `${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes/${itm.attrId}`);
+      `${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes/${itm.attrId}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      });
 
       await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}/routes`,
-        { planId: planId, order: (i + 1), attrId: itm.attrId }
+        { planId: planId, order: (i + 1), attrId: itm.attrId }, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          }
+        }
       );
     }
     alert('일정 수정에 성공했습니다!');
     router.back();
   } else {
     // 새 플랜 등록
-    const res = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/plans`, form);
+    const res = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/plans`, form, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    });
     const newId = res.data.value;
     for (let i = 0; i < favoritesList.value.length; i++) {
       const itm = favoritesList.value[i];
       await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/plans/${newId}/routes`,
-        { planId: newId, order: i + 1, attrId: itm.attrId }
+        { planId: newId, order: i + 1, attrId: itm.attrId }, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          }
+        }
       );
     }
     alert('일정 생성에 성공했습니다!');

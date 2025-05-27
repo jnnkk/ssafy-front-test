@@ -31,13 +31,23 @@ async function fetchFavorites() {
   try {
     // 1) userId 별 즐겨찾기 리스트
     const { data: favList } = await axios.get(
-      `${import.meta.env.VITE_APP_BASE_URL}/favorites?userId=${userId}`
+      `${import.meta.env.VITE_APP_BASE_URL}/favorites?userId=${userId}`,
+      {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      }
     );
     // 2) attrId 별로 attractions 정보 가져와서 title, firstImage1 병합
     const enriched = await Promise.all(
       favList.value.map(async (fav) => {
         const { data: attr } = await axios.get(
-          `${import.meta.env.VITE_APP_BASE_URL}/attractions/${fav.attrId}`
+          `${import.meta.env.VITE_APP_BASE_URL}/attractions/${fav.attrId}`,
+          {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            }
+          }
         );
         console.log(attr.title, attr.firstImage1)
         return {
@@ -58,7 +68,11 @@ async function deleteFavorite(attrId) {
   try {
     const result = confirm('정말 이 작업을 진행하시겠습니까?');
     if (result) {
-      await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${attrId}`);
+      await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${attrId}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      });
     favorites.value = favorites.value.filter(f => f.attrId !== attrId);
     } 
   } catch (err) {

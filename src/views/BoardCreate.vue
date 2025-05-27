@@ -107,19 +107,31 @@ async function fetchPlans() {
   if (saved) loginUser.value = JSON.parse(saved)
   if (!loginUser.value.userId) return
   try {
-    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${loginUser.value.userId}`)
+    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${loginUser.value.userId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const plans = res.data.value ?? []
 
     // 각 Plan별로 Route 및 Attraction title 병렬 조회
     await Promise.all(plans.map(async plan => {
       // Route 조회
-      const routeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${plan.planId}/routes`)
+      const routeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans/${plan.planId}/routes`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      })
       plan.routeList = routeRes.data.value ?? []
 
       // 각 Route별 attrId로 Attraction title 조회
       await Promise.all(plan.routeList.map(async route => {
         try {
-          const attrRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${route.attrId}`)
+          const attrRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${route.attrId}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            }
+          })
           const attraction = attrRes.data.value ?? attrRes.data
           route.attractionTitle = attraction.title
         } catch {
@@ -145,7 +157,11 @@ async function submitPost() {
     for (const file of imageFiles.value) {
       const imgForm = new FormData()
       imgForm.append('image', file)
-      const res = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/s3/upload`, imgForm)
+      const res = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/s3/upload`, imgForm, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      })
       const url = typeof res.data === 'string' ? res.data : res.data.value
       uploadedImageUrls.value.push(url)
     }
@@ -165,7 +181,7 @@ async function submitPost() {
 
     // 3) 최종 API 호출
     await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/boards`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data', 'ngrok-skip-browser-warning': 'true' }
     })
     alert('일정게시판 등록에 성공했습니다!')
     router.push('/boards')

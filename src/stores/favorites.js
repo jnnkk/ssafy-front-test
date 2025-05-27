@@ -17,7 +17,11 @@ export const useFavoriteStore = defineStore('favorites', () => {
 
     const fetchFavorites = async (userId) => {
         try {
-            const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${userId}`)
+            const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/favorites/${userId}`, {
+              headers: {
+                'ngrok-skip-browser-warning': 'true',
+              }
+            })
             
             setFavorites(data.data.value)
             console.log("현재 즐겨찾기 목록", data.data.value)

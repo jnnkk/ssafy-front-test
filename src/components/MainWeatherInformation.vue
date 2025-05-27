@@ -281,6 +281,9 @@ const fetchWeather = async () => {
 
     try {
         const { data } = await axios.get('/api/1360000/VilageFcstInfoService_2.0/getVilageFcst', {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            },
             params: {
                 serviceKey: weatherKey,
                 pageNo: 1,

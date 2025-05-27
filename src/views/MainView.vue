@@ -36,6 +36,7 @@ onMounted(async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true',
         },
       })
       // data 에서 바로 꺼내 쓰시면 됩니다.

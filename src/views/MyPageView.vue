@@ -48,11 +48,19 @@ const user = ref({});
 
 
 async function fetchUserData() {
-  const {data} = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`)
+  const {data} = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  })
   user.value = data.value;
   const userId = parseInt(user.value.userId);
   profileImage.value = user.value.profile;
-  const {data : {value :plans}} = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${userId}`)
+  const {data : {value :plans}} = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/plans?userId=${userId}`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  })
   schedules.value = plans;
   console.log(schedules.value);
 }

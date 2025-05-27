@@ -130,7 +130,8 @@ async function triggerFileInput() {
     form.append('profile', selectedFile.value);
   await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/users/profile`, form, {
       headers: {
-        'Content-Type' : 'multipart/form-data'
+        'Content-Type' : 'multipart/form-data',
+        'ngrok-skip-browser-warning': 'true',
       }
     });
      alert('프로필이 성공적으로 변경되었습니다!');
@@ -143,7 +144,11 @@ async function triggerFileInput() {
 async function onSubmit() {
   try {
     
-    await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/users`, formData);
+    await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/users`, formData, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    });
     sessionStorage.removeItem('accessToken');
     window.location.replace('/');
 

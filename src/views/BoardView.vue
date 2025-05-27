@@ -84,7 +84,11 @@ const pagedEvents = computed(() =>
 )
 async function fetchEvents() {
   try {
-    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards`)
+    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     // { status:"OK", value: [...] } or plain array
     const list = res.data.value ?? []
     console.log('받아온 게시물 개수:', list.length)
@@ -149,6 +153,11 @@ async function fetchEvents() {
         try {
           const commentRes = await axios.get(
             `${import.meta.env.VITE_APP_BASE_URL}/comments/${item.boardId}`,
+            {
+              headers: {
+                'ngrok-skip-browser-warning': 'true',
+              }
+            }
           )
           const commentsList = commentRes.data.value
           commentsCount = commentsList.length
@@ -158,7 +167,11 @@ async function fetchEvents() {
 
           let likeCount = 0
         try {
-          const likeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/likes/${item.boardId}`)
+          const likeRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/likes/${item.boardId}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            }
+          })
           const cnt     = likeRes.data.value ?? likeRes.data
           likeCount     = typeof cnt === 'number' ? cnt : 0
         } catch (e) {

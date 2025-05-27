@@ -115,7 +115,11 @@ async function fetchLikeList() {
   const boardId = route.params.id
   if (boardId) {
     try {
-      const res2 = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/likes/${boardId}`)
+      const res2 = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/likes/${boardId}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
+      })
       likeCount.value = res2.data.value ?? res2.data
       console.log(likeCount.value);
     } catch (e) {
@@ -126,6 +130,9 @@ async function fetchLikeList() {
 
   try {
     const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/likes`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
       params: { userId: loginUser.value.userId }
     })
     userLikeList.value = res.data.value ?? res.data
@@ -145,6 +152,10 @@ async function toggleLike() {
       const res = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}/likes`, {
         userId:  loginUser.value.userId,
         boardId: route.params.id
+      }, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
       })
       likeId = res.data.value?.likeId ?? res.data.likeId
       likeCount.value++
@@ -157,7 +168,10 @@ async function toggleLike() {
     try {
       await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/likes`,
         {data : {userId:  loginUser.value.userId,
-        boardId: Number(route.params.id)}
+        boardId: Number(route.params.id)},
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        }
       }
       )
       likeCount.value = Math.max(0, likeCount.value - 1)
@@ -190,7 +204,11 @@ function formatDate(d) {
 async function fetchBoard() {
   try {
     const id = route.params.id
-    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards/${id}`)
+    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/boards/${id}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     const data = res.data.value ?? res.data
     // imageUrl이 중첩된 JSON 문자열로 올 때 파싱
     let images = []
@@ -224,7 +242,11 @@ async function fetchBoard() {
 async function fetchComments() {
   try {
     const boardId = route.params.id
-    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/comments/${boardId}`)
+    const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/comments/${boardId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     comments.value = res.data.value ?? res.data
     if (comments.value === '해당 게시글에 댓글이 없습니다') {
       comments.value = 0
@@ -232,7 +254,11 @@ async function fetchComments() {
     await Promise.all(
       comments.value.map(async (c) => {
         try {
-          const userRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/${c.userId}`)
+          const userRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/${c.userId}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            }
+          })
           const userData = userRes.data.value ?? userRes.data
           c.userName = userData.userName
           c.profile = userData.profile
@@ -259,6 +285,10 @@ async function submitComment() {
       boardId: boardId,
       userId: loginUser.value.userId,
       content: newComment.value,
+    }, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
     })
     newComment.value = ''
     fetchComments()
@@ -303,6 +333,10 @@ async function onEdit(comment) {
     await axios.put(`${import.meta.env.VITE_APP_BASE_URL}/comments/${commentId}`, {
       content: editContent.value,
       commentId: commentId,
+    }, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
     })
     editingCommentId.value = null
     fetchComments()

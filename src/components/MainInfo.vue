@@ -183,7 +183,11 @@ const fetchRecommendAttractions = async () => {
         })
         if (res.data && res.data.value) {
             for (let i = 0; i < res.data.value.length; i++) {
-                const attraction = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${res.data.value[i].id}`)
+                const attraction = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/attractions/${res.data.value[i].id}`, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true',
+                    }
+                })
                 attraction.data.value.overview = res.data.value[i].overview
                 recommendAttractions.value.push(attraction.data.value)
             }
@@ -202,6 +206,7 @@ const fetchMe = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/me`, {
             headers: {
                 Authorization: `Bearer ${token}`,
+                'ngrok-skip-browser-warning': 'true',
             },
         })
         // data 에서 바로 꺼내 쓰시면 됩니다.
@@ -236,6 +241,10 @@ const goToAttraction = (attractionId) => {
         axios.post(`${import.meta.env.VITE_APP_BASE_URL}/favorites`, {
             attrId: attractionId,
             userId: loginUser.value.userId
+        }, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
         })
     }
 }

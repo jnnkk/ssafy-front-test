@@ -183,7 +183,11 @@ async function fetchNoticeBoards() {
   loading.value = true
   try {
     // 페이지 정보를 쿼리 파라미터로 전달
-    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/notices`)
+    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/notices`, {
+        headers: {
+            'ngrok-skip-browser-warning': 'true',
+        }
+    })
     // noticeBoards.value = data.data.value || [] // 페이지네이션된 데이터 구조에 맞게 조정
     noticeTotal.value = data.data.value.length || 0 // 총 게시글 수
     noticeBoards.value = data.data.value.sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate)) || []
@@ -200,14 +204,22 @@ async function fetchQnABoards() {
   loading.value = true
   try {
     // 페이지 정보를 쿼리 파라미터로 전달
-    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions`)
+    const data = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/questions`, {
+        headers: {
+            'ngrok-skip-browser-warning': 'true',
+        }
+    })
     // qnaBoards.value = data.data.value || [] // 페이지네이션된 데이터 구조에 맞게 조정
     qnaTotal.value = data.data.value.length || 0 // 총 게시글 수
 
      const boardWithUserNames = await Promise.all(
       data.data.value.map(async (item) => {
         try {
-          const userRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/${item.userId}`)
+          const userRes = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/users/${item.userId}`, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+          })
           return {
             ...item,
             author: userRes.data.value.userName // 또는 res.data.value.userName 구조에 맞게

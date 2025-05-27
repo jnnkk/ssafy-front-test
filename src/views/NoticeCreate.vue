@@ -71,8 +71,10 @@ payload.append('imageUrl', JSON.stringify([]))
     const response = await axios.post(
       `${import.meta.env.VITE_APP_BASE_URL}/notices`, // 공지사항 등록 엔드포인트
       payload,
-       {  headers: { 'Content-Type': 'multipart/form-data' },
-  })
+       {  headers: { 'Content-Type': 'multipart/form-data',
+        'ngrok-skip-browser-warning': 'true',
+       }
+      })
     console.log('등록 성공:', response.data)
     router.back()
   } catch (err) {

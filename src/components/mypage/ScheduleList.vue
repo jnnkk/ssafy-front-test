@@ -76,7 +76,11 @@ function goDetail(id) {
 // 일정 삭제
 async function deletePlan(planId) {
   if (!confirm('정말 이 일정을 삭제하시겠습니까?')) return;
-  await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`);
+  await axios.delete(`${import.meta.env.VITE_APP_BASE_URL}/plans/${planId}`, {
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+    }
+  });
   schedules.value = schedules.value.filter(p => p.planId !== planId);
   window.location.replace('/mypage');
 }

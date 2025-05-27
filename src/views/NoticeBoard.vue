@@ -107,7 +107,11 @@ async function fetchPosts() {
   const endpoint = currentTab.value === 'NOTICE' ? '/notices' : '/questions'
 
   try {
-    const res = await axios.get(`${base}${endpoint}`)
+    const res = await axios.get(`${base}${endpoint}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      }
+    })
     // ① res.data.value 가 배열인지, 아니라면 빈 배열로:
     const raw = res.data.value ?? []
     const listArr = Array.isArray(raw) ? raw : []
